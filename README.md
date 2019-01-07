@@ -2,6 +2,12 @@
 Generate WCET for ALF Statements based on SWEET Tool
 
 Method:  see SWEET manual 4.14
+
+## Requirement
+- python (version 3+)
+- sweet
+
+## File Resource
 clt : insertsort.clt provided by SWEET manual
 std_hll: for 64bit
 
