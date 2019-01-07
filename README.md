@@ -1,7 +1,8 @@
 # WCET_Generator V2.1
 Generate WCET for ALF Statements based on SWEET Tool
 
-Method:  see SWEET manual 4.14
+## Method
+- details see SWEET manual 4.14
 
 ## Requirement
 - python (version 3+)
@@ -9,9 +10,9 @@ Method:  see SWEET manual 4.14
 
 ## File Resource
 clt : insertsort.clt provided by SWEET manual
-std_hll: for 64bit
+std_hll: for 64bit (see SWEET manual)
 
-- How To Use：
+## How To Use：
 >./wctg [.alf]
 >chmod a+x wctg       (如果执行不了的话给wctg赋值)
 
@@ -20,4 +21,4 @@ The alf slices folder and wcet time table(.wct) will be generated in folder wher
 - unspported:
     - The WCET for Every Statement including "call" replaced with ERROR
 
->It's only an early version and we will get ready soon.
+## It's only an early version and we will get ready soon.
