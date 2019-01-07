@@ -13,10 +13,12 @@ clt : insertsort.clt provided by SWEET manual
 std_hll: for 64bit (see SWEET manual)
 
 ## How To Use：
->./wctg [.alf]
->chmod a+x wctg       (如果执行不了的话给wctg赋值)
+> ./wctg [.alf]
 
-The alf slices folder and wcet time table(.wct) will be generated in folder where your alf file imported.
+Remember to give "wctg" permission to execute. 
+> chmod a+x wctg
+
+- The alf slices folder and wcet time table(.wct) will be generated in folder where your alf file imported.
 
 - unspported:
     - The WCET for Every Statement including "call" replaced with ERROR
