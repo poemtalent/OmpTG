@@ -1,13 +1,9 @@
-WCET_Generator V2.1
+## WCET_Generator V2.2
+fix Calculation of Call
 
 
-wctg(worst case time generator)
-使用方法：
->>./wctg [.alf]
->>chmod a+x wctg       (如果执行不了的话给wctg赋值)
 
-在文件夹下会生成 alf slice 和 .wct结尾的wcet时间表
-
+## WCET_Generator V2.1
 unspported:
-call调用的问题没想到好的解决方案，所有含call的wcet均为ERROR
+call
 

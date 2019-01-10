@@ -17,8 +17,17 @@ def Changejump (dict):
             #print(start_pl)
             start_place=string.find(start,start_pl+5)
             #print(start_place)
+            prestart_place=0
             while start_place!=-1:
-                if(string[start_place-8:start_place].find("call")==-1):
+                for I in range(0, start_place):
+                    num = 2
+                    if string[start_place - I] == "{":
+                        num -= 1
+                        if num == 0:
+                            prestart_place = start_place - I
+                            break
+                if(string[prestart_place:start_place].find("call")==-1):
+
                     num=1
                     string=dict[bb]
                     for i in range(0,start_place):
@@ -53,11 +62,11 @@ def Changejump (dict):
                                 end_p=i
                                 num=1
                                 break
-                    strii=string[start_p:end_p+1]
+                    strii=string[start_p:end_p]
                     call_start_palce=strii.find('"')
                     call_end_palce=strii.find('"',call_start_palce+1)
                     strii=strii[:call_start_palce+1]+"callfunction"+strii[call_end_palce:]
-                    dict[bb]=dict[bb][:start_p]+strii+dict[bb][end_p+1:]
+                    dict[bb]=dict[bb][:start_p]+strii+dict[bb][end_p:]
                     start_place=dict[bb].find(start,end_p)
                 # else:
                 #     print(string[call_label_palce:start_place])
