@@ -286,11 +286,11 @@ def getBasicBlockSlice(list):
             # else:
             #     new_dict[key] = string[end_place:]
             # # print (string[end_place:])
-        file = open('example.alf','w')
-        for ebb in dict:
-            file.writelines(ebb+'\n')
-            file.writelines(dict[ebb]+'\n')
-        file.close()
+        #file = open('example.alf','w')
+        #for ebb in dict:
+        #    file.writelines(ebb+'\n')
+        #    file.writelines(dict[ebb]+'\n')
+        #file.close()
         return new_dict
 # print (getBasicBlockSlice(li))
 #for bb in list:
