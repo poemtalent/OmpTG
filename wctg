@@ -1,4 +1,7 @@
 echo 'WCET_Generater_V2.2'
+
+
 basepath=$(cd `dirname $0`; pwd)
 command -v python3 >/dev/null 2>&1 || { echo -e >&2 "I require python3 but it's can't be found. \nTry source /etc/profile or .bash_profile?\nAborted."; exit 1; }
+command -v sweet >/dev/null 2>&1 || { echo -e >&2 "I require SWEET but it's can't be found. \nTry source /etc/profile or .bash_profile?\nAborted."; exit 1; }
 /usr/bin/python3 $basepath/src/main.py $1
