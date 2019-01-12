@@ -38,7 +38,7 @@ def parseArgument(argument,num):
             elif argList[0]=='select':
                 return parseArgument(findPosFromPoint(argm,0),num)
                 #pass
-            elif argList[0].startswith('f_') or argList[0].endswith('_f'):
+            elif argList[0].startswith('f_') or argList[0].endswith('_f') or argList[0].startswith('float'):
                 #64
                 return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
                 #pass
