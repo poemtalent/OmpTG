@@ -11,8 +11,8 @@ from getBasicBlockSlice import getBasicBlockSlice
 from Create_every_bb import Create_every_bb
 from WCET_Generator import WCET_Output
 try:
-    Enter_File_Name = 'alignment_ompi.alf'
-    # Enter_File_Name=sys.argv[1]
+    # Enter_File_Name = 'alignment_ompi.alf'
+    Enter_File_Name=sys.argv[1]
 except:
     print('Please Input ALF file u\'d like to analyze.\nAborted.')
     sys.exit(0)
@@ -42,7 +42,7 @@ if os.path.isfile(Enter_File_Name) :
         Changejump(dict_temp)
         #print(dict_temp)
         Create_every_bb(dict_temp,Every_func_mid_declaration,head,WCETList,filesname)
-    # WCET_Output(WCETList,os.path.splitext(Enter_File_Name)[0])
+    WCET_Output(WCETList,os.path.splitext(Enter_File_Name)[0])
     print('Create ALF file Success!')
     # print(Every_func_mid_declaration)
     # print(list_func)
