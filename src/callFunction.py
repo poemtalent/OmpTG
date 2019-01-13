@@ -35,7 +35,6 @@ def parseArgument(argument,num):
         for word in argList[0]:
             if argList[0].isdigit():
                 return ''
-
             #c -> unsigned(1)
             elif argList[0]=='neg' or argList[0]=='add' or argList[0]=='sub' or argList[0]=='not' or argList[0]=='and' or argList[0]=='or' or argList[0]=='xor':
                 if int(argList[1])>32:
@@ -66,7 +65,7 @@ def parseArgument(argument,num):
                     return  '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
                 else:
                     return  '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
-            elif argList[0].startswith('f_') or argList[0] == '_f':
+            elif argList[0].startswith('f_') or argList[0].endswith('_f'):
                 return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
 
             elif argList[0]=='if':
@@ -75,7 +74,6 @@ def parseArgument(argument,num):
                 else:
                     return  '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
             elif argList[0]=='s_ext':
-
                 if (int(argList[2])> 32):
                     return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
                 else:
@@ -96,7 +94,8 @@ def parseArgument(argument,num):
                 else:
                     return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
                 #pass
-
+            elif argList[0]=='float_val':
+                return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
             elif (argList[1].isdigit()):
                 #add u_mul
                 return '{ alloc 64 "%argm_'+str(num)+'" '+argList[1]+' }\n'
@@ -164,6 +163,6 @@ def GenerateCallFunction(CallStatement):
 
 
 #Just For test
-#teststr='{ call { label 64 { lref 64 "callfunction" } { dec_unsigned 64 0 } } { addr 64 { fref 64 "%result" } { dec_unsigned 64 0 } } { load 64 { addr 64 { fref 64 "%tmp1" } { dec_unsigned 64 0 } } } result }'
+#teststr='{ call      { label 64 { lref 64 "callfunction" } { dec_unsigned 64 0 } }      { label 64 { lref 64 "sparselu_par_call::bb21" } { dec_unsigned 64 0 } }      { addr 64 { fref 64 "%_shvars" } { dec_unsigned 64 0 } }      { dec_signed 32 { minus 1 } }      { dec_unsigned 32 0 }      { dec_unsigned 32 1 }      result     }'
 #print(GenerateCallFunction(teststr))
 

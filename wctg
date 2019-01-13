@@ -1,4 +1,4 @@
-echo 'WCET_Generater_V2.2'
+echo 'WCET_Generater_V2.3'
 
 
 basepath=$(cd `dirname $0`; pwd)
