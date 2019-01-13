@@ -44,6 +44,7 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                             f.write(li[i][j]+'\n')
                 f.write(dicti[findlabel(getfunc_name)]+'\n')
                 f.write(dic[bb]+'\n')
+                aaa=dic[bb]
                 call_body=find_call_body(dic[bb])
                 if(call_body==0):
                     f.write(dic['return']+'\n')
@@ -128,11 +129,13 @@ def findlabel(str):
 def find_call_body(str):
     string=str.strip()
     start_call_place=string.find("call")
-    if(start_call_place!=-1 and (string[start_call_place-1]==' ' or string[start_call_place-1]=='{')):
-        call_body=string[len(findPosFromPoint(string,0)):].strip()
-        return call_body
-    else:
-        return 0
+    while(start_call_place != -1 ):
+        if string[start_call_place-1]=='_':
+            start_call_place=string.find("call",start_call_place+4)
+        else:
+            call_body=string[len(findPosFromPoint(string,0)):].strip()
+            return call_body
+    return 0
 
 def WCET_Generator(FuncName,BasicBlock,ALFile,WCETList):
     #call SWEET
