@@ -7,7 +7,7 @@ from callFunction import GenerateCallFunction
 from callFunction import findPosFromPoint
 def Create_every_bb (dic,dicti,li,WCETList,filesname):
     dictex={'a':1,'b':2}
-    sysstr = platform.system()
+    sysstr = platform.system()#system
     for bb in dic:
         if len(dic)!=1:
             if bb!='return':
