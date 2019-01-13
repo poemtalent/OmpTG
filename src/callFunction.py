@@ -35,28 +35,68 @@ def parseArgument(argument,num):
         for word in argList[0]:
             if argList[0].isdigit():
                 return ''
+
+            #c -> unsigned(1)
+            elif argList[0]=='neg' or argList[0]=='add' or argList[0]=='sub' or argList[0]=='not' or argList[0]=='and' or argList[0]=='or' or argList[0]=='xor':
+                if int(argList[1])>32:
+                    return  '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return  '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+
+            elif argList[0]=='u_mul' or argList[0]=='s_mul':
+                if (int(argList[1]) + int(argList[2]) > 32):
+                    return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+            elif argList[0]=='u_div' or argList[0]=='s_div' or argList[0]=='u_mod' or argList[0]=='s_mod' or argList[0]=='l_shift' or argList[0].startswith('r_shift') or argList[0]=='repeat':
+                if (int(argList[1])> 32):
+                    return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+            elif argList[0].startswith('c_'):
+                return  '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+
+            elif argList[0] == 'eq' or argList[0] == 'neq' or argList[0] == 'u_lt' or argList[0] == 'u_ge' \
+                    or argList[0] == 'u_gt' or argList[0] == 'u_le' or argList[0] == 's_lt' or argList[0] == 's_ge' or argList[0] == 's_gt' or argList[0] == 's_le'\
+                    or argList[0] == 'f_eq' or argList[0] == 'f_ne' or argList[0] == 'f_lt' or argList[0] == 'f_ge' or argList[0] == 'f_gt' or argList[0] == 'f_le':
+                return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+
+            elif argList[0]=='f_to_u' or argList[0]=='f_to_s':
+                if int(argList[3])>32:
+                    return  '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return  '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+            elif argList[0].startswith('f_') or argList[0] == '_f':
+                return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+
+            elif argList[0]=='if':
+                if int(argList[1])>32:
+                    return  '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return  '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+            elif argList[0]=='s_ext':
+
+                if (int(argList[2])> 32):
+                    return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+
+
             elif argList[0]=='select':
                 #argList[1],argList[2],argList[3]
                 if(int(argList[3])-int(argList[2])+1>32):
                     return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
                 else:
                     return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
-                #pass
-            elif argList[0].startswith('f') or argList[0].endswith('_f'):
-                #64
-                return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
-            elif argList[0].endswith('_ext'):
-                #64
-                return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
-                #pass
-            elif argList[0]=='s_to_f':
-                return  '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+
+
             elif argList[0] == 'conc':
                 if(int(argList[1])+int(argList[2])>32):
                     return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
                 else:
                     return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
                 #pass
+
             elif (argList[1].isdigit()):
                 #add u_mul
                 return '{ alloc 64 "%argm_'+str(num)+'" '+argList[1]+' }\n'
