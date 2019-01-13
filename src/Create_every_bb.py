@@ -70,7 +70,7 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                     f.write('  }\n')
                     f.write(' }\n')
                 f.close()
-                # WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
+                WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
         else:
             #Only have return statement
             getfunc_name=dic[bb]
@@ -110,7 +110,7 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                     f.write(' ')
                 f.write('}\n')
             f.close()
-            # WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
+            WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
     funcname=findlabel(dic['return'])
     filesname.append(funcname.lower())
 
