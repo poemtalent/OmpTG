@@ -1,30 +1,39 @@
 # Create_every_bb
 import os
+import platform
 import re as r #正则表达式库
 import sys
 from callFunction import GenerateCallFunction
 from callFunction import findPosFromPoint
 def Create_every_bb (dic,dicti,li,WCETList,filesname):
     dictex={'a':1,'b':2}
+    sysstr = platform.system()
     for bb in dic:
         if len(dic)!=1:
             if bb!='return':
-                #Only have return statement
-                getfunc_name=dic[bb]
+                if sysstr=="Linux":
+                    getfunc_name = dic[bb]
+                    FuncLabel = findlabel(getfunc_name)
+                    path = 'Generate_file/' + FuncLabel
+                    folder = os.path.exists(path)
+                    if not folder:
+                        os.makedirs(path)
+                    GenerateFileName = 'Generate_file/' + FuncLabel + '/' + bb + '.alf'
+                else:
+                    getfunc_name=dic[bb]
+                    FuncLabel=findlabel(getfunc_name)
+                    for i in range(0,len(filesname)):
+                        if filesname[i] == FuncLabel.lower():
+                            FuncLabel=FuncLabel+"_other"
+                            break
+                    path='Generate_file/'+FuncLabel
+                    folder = os.path.exists(path)
+                    if not folder:
+                        os.makedirs(path)
+                    # f = open('Generate_file/'+'Circle_'+bb+'.txt', 'w')
+                    GenerateFileName='Generate_file/'+FuncLabel+'/'+bb+'.alf'
 
-                FuncLabel=findlabel(getfunc_name)
-                FuncLabel=findlabel(getfunc_name)
-                for i in range(0,len(filesname)):
-                    if filesname[i] == FuncLabel.lower():
-                        FuncLabel=FuncLabel+"_other"
-                        # print("1")
-                        break
-                path='Generate_file/'+FuncLabel
-                folder = os.path.exists(path)
-                if not folder:
-                    os.makedirs(path)
-                # f = open('Generate_file/'+'Circle_'+bb+'.txt', 'w')
-                GenerateFileName='Generate_file/'+FuncLabel+'/'+bb+'.alf'
+
                 f = open(GenerateFileName, 'w')
                 for i in range(0,len(li)):
                     #print(i)
@@ -44,7 +53,6 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                             f.write(li[i][j]+'\n')
                 f.write(dicti[findlabel(getfunc_name)]+'\n')
                 f.write(dic[bb]+'\n')
-                aaa=dic[bb]
                 call_body=find_call_body(dic[bb])
                 if(call_body==0):
                     f.write(dic['return']+'\n')
@@ -62,7 +70,7 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                     f.write('  }\n')
                     f.write(' }\n')
                 f.close()
-                WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
+                # WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
         else:
             #Only have return statement
             getfunc_name=dic[bb]
@@ -102,7 +110,7 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                     f.write(' ')
                 f.write('}\n')
             f.close()
-            WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
+            # WCET_Generator(FuncLabel,bb,GenerateFileName,WCETList)
     funcname=findlabel(dic['return'])
     filesname.append(funcname.lower())
 
