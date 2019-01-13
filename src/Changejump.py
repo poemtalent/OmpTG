@@ -19,25 +19,27 @@ def Changejump (dict):
             start_place=string.find(start,start_pl+5)
             #print(start_place)
             prestart_place=0
+            sbb = ''
             while start_place!=-1:
+                num = 2
                 for I in range(0, start_place):
-                    num = 2
+
                     if string[start_place - I] == "{":
                         num -= 1
                         if num == 0:
                             prestart_place = start_place - I
-
                             break
+                ss=string[prestart_place:start_place]
                 if (string[prestart_place:start_place].find("call") == -1):
             # while start_place != -1:
             #     if(string[start_place-8:start_place].find("call")==-1):
 
                     num=1
                     string=dict[bb]
-                    for i in range(0,start_place):
+                    for j in range(0,start_place):
                         #print(i)
-                        if string[start_place-i]=='{':
-                            start_p=start_place-i
+                        if string[start_place-j]=='{':
+                            start_p=start_place-j
                             break
                     for i in range(start_place,len(string)):
                         if string[i]=='{':
@@ -55,6 +57,8 @@ def Changejump (dict):
                     #     print("changejump"+dict[bb]
 
                 else:
+
+                    ssb = ssb + "sdsd"
                     string=dict[bb]
                     num=1
                     for i in range(0,start_place):
@@ -77,6 +81,7 @@ def Changejump (dict):
                     strii=strii[:call_start_palce+1]+"callfunction"+strii[call_end_palce:]
                     dict[bb]=dict[bb][:start_p]+strii+dict[bb][end_p:]
                     start_place=dict[bb].find(start,end_p)
+
                 # else:
                 #     print(string[call_label_palce:start_place])
                 #     call_label_palce=(string[call_label_palce:start_place].find("call")

@@ -128,9 +128,7 @@ def findlabel(str):
 def find_call_body(str):
     string=str.strip()
     start_call_place=string.find("call")
-    if(start_call_place!=-1):
-        #去掉label段
-        strii=string[len(findPosFromPoint(string,0)):].strip()
+    if(start_call_place!=-1 and (string[start_call_place-1]==' ' or string[start_call_place-1]=='{')):
         return strii
     else:
         return 0

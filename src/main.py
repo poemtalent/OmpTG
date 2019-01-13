@@ -11,7 +11,7 @@ from getBasicBlockSlice import getBasicBlockSlice
 from Create_every_bb import Create_every_bb
 from WCET_Generator import WCET_Output
 try:
-    # Enter_File_Name = 'alignment_ompi.alf'
+    # Enter_File_Name = 'exm.alf'
     Enter_File_Name=sys.argv[1]
 except:
     print('Please Input ALF file u\'d like to analyze.\nAborted.')
