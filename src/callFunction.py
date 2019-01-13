@@ -41,9 +41,14 @@ def parseArgument(argument,num):
             elif argList[0].startswith('f_') or argList[0].endswith('_f') or argList[0].startswith('float'):
                 #64
                 return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+            elif argList[0].endswith('_ext'):
+                #64
+                return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
                 #pass
             elif argList[0]=='s_to_f':
                 return  '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+            elif argList[0] == 'conc':
+                return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
                 #pass
             elif (argList[1].isdigit()):
                 #add u_mul
@@ -96,6 +101,10 @@ def GenerateCallFunction(CallStatement):
     argument_st_pos=CallStatement.find(call_label)+len(call_label)
     argument_ed_pos=CallStatement.find('result')
 
+    while CallStatement[argument_ed_pos-1]=='%':
+        #for %result
+        argument_ed_pos = CallStatement.find('result',argument_ed_pos+1)
+
     argument_string=CallStatement[argument_st_pos:argument_ed_pos].strip()
 
     output=parseArgumentString(argument_string)
@@ -107,7 +116,7 @@ def GenerateCallFunction(CallStatement):
     return FinalOutput
 
 
-
-#teststr='{ call { label 64 { lref 64 "callfunction" } { dec_unsigned 64 0 } } { add 64 { load 64 { addr 64 { fref 64 "%tmp27" } { dec_unsigned 64 0 } } } { select 128 0 63 { u_mul 64 64 { s_ext 32 64 { load 32 { addr 64 { fref 64 "%tmp28" } { dec_unsigned 64 0 } } } } { dec_unsigned 64 16 } } } { dec_unsigned 1 0 } } { add 64 { load 64 { addr 64 { fref 64 "%tmp31" } { dec_unsigned 64 0 } } } { select 128 0 63 { u_mul 64 64 { s_ext 32 64 { load 32 { addr 64 { fref 64 "%tmp32" } { dec_unsigned 64 0 } } } } { dec_unsigned 64 16 } } } { dec_unsigned 1 0 } } { load 64 { addr 64 { fref 64 "%tmp35" } { dec_unsigned 64 0 } } } { load 32 { addr 64 { fref 64 "%tmp36" } { dec_unsigned 64 0 } } } { load 32 { addr 64 { fref 64 "%tmp37" } { dec_unsigned 64 0 } } } { load 32 { addr 64 { fref 64 "%tmp38" } { dec_unsigned 64 0 } } } { select 64 0 31 { u_mul 32 32 { load 32 { addr 64 { fref 64 "%tmp39" } { dec_unsigned 64 0 } } } { load 32 { addr 64 { fref 64 "%tmp40" } { dec_unsigned 64 0 } } } } } { select 64 0 31 { u_mul 32 32 { load 32 { addr 64 { fref 64 "%tmp42" } { dec_unsigned 64 0 } } } { load 32 { addr 64 { fref 64 "%tmp43" } { dec_unsigned 64 0 } } } } } result }'
+#Just For test
+#teststr='{ call { label 64 { lref 64 "callfunction" } { dec_unsigned 64 0 } } { addr 64 { fref 64 "%result" } { dec_unsigned 64 0 } } { load 64 { addr 64 { fref 64 "%tmp1" } { dec_unsigned 64 0 } } } result }'
 #print(GenerateCallFunction(teststr))
 
