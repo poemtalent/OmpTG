@@ -36,9 +36,13 @@ def parseArgument(argument,num):
             if argList[0].isdigit():
                 return ''
             elif argList[0]=='select':
-                return parseArgument(findPosFromPoint(argm,0),num)
+                #argList[1],argList[2],argList[3]
+                if(int(argList[3])-int(argList[2])+1>32):
+                    return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
                 #pass
-            elif argList[0].startswith('f_') or argList[0].endswith('_f') or argList[0].startswith('float'):
+            elif argList[0].startswith('f') or argList[0].endswith('_f'):
                 #64
                 return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
             elif argList[0].endswith('_ext'):
@@ -48,7 +52,10 @@ def parseArgument(argument,num):
             elif argList[0]=='s_to_f':
                 return  '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
             elif argList[0] == 'conc':
-                return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                if(int(argList[1])+int(argList[2])>32):
+                    return '{ alloc 64 "%argm_' + str(num) + '" 64 }\n'
+                else:
+                    return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
                 #pass
             elif (argList[1].isdigit()):
                 #add u_mul
