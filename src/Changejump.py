@@ -55,10 +55,7 @@ def Changejump (dict):
                     start_place = dict[bb].find(start, end_p)
                     # except:
                     #     print("changejump"+dict[bb]
-
                 else:
-
-                    ssb = ssb + "sdsd"
                     string=dict[bb]
                     num=1
                     for i in range(0,start_place):
