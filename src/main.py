@@ -11,7 +11,7 @@ from getBasicBlockSlice import getBasicBlockSlice
 from Create_every_bb import Create_every_bb
 from WCET_Generator import WCET_Output
 try:
-    #Enter_File_Name = 'alignment_ompi.alf'
+    # Enter_File_Name = 'alignment_ompi.alf'
     Enter_File_Name=sys.argv[1]
 except:
     print('Please Input ALF file u\'d like to analyze.\nAborted.')
@@ -36,6 +36,7 @@ if os.path.isfile(Enter_File_Name) :
     for i in range(0,len(list_func)):
         list_func_temp=[]
         list_func_temp.append(list_func[i])
+
         dict_temp=getBasicBlockSlice(list_func_temp)
         #print(dict_temp)
         Changejump(dict_temp)
