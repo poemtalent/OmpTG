@@ -58,7 +58,7 @@ def parseArgument(argument,num):
             elif argList[0] == 'eq' or argList[0] == 'neq' or argList[0] == 'u_lt' or argList[0] == 'u_ge' \
                     or argList[0] == 'u_gt' or argList[0] == 'u_le' or argList[0] == 's_lt' or argList[0] == 's_ge' or argList[0] == 's_gt' or argList[0] == 's_le'\
                     or argList[0] == 'f_eq' or argList[0] == 'f_ne' or argList[0] == 'f_lt' or argList[0] == 'f_ge' or argList[0] == 'f_gt' or argList[0] == 'f_le':
-                return '{ alloc 64 "%argm_' + str(num) + '" 32 }\n'
+                return '{ alloc 64 "%argm_' + str(num) + '" 1 }\n'
 
             elif argList[0]=='f_to_u' or argList[0]=='f_to_s':
                 if int(argList[3])>32:
