@@ -1,10 +1,42 @@
 echo 'WCET_Generater_V2.3'
 
-
-basepath=$(cd `dirname $0`; pwd)
 command -v python3 >/dev/null 2>&1 || { echo -e >&2 "I require python3 but it's can't be found. \nTry source /etc/profile or .bash_profile?\nAborted."; exit 1; }
 command -v sweet >/dev/null 2>&1 || { echo -e >&2 "I require SWEET but it's can't be found. \nTry source /etc/profile or .bash_profile?\nAborted."; exit 1; }
 
-filepath=`pwd`
-echo "/usr/bin/python3 $basepath/src/main.py $filepath/$1"
-/usr/bin/python3 $basepath/src/main.py $filepath/$1
+
+basepath=$(cd `dirname $0`; pwd)
+
+args=""
+
+while getopts "i:h:gw:gs:gt" opt;
+do
+    case $opt in
+        i)
+            file=`basename $OPTARG`
+            $args=$args" -i "$(cd `dirname $OPTARG`; pwd)"/"$file
+            ;;
+        gw)
+            file=`basename $OPTARG`
+            $args=$args"-w "$(cd `dirname $OPTARG`; pwd)$file
+            ;;
+        gs)
+            ;;
+        gt)
+            ;;
+        h)
+            $args="-h"
+            break
+            ;;
+        \?)
+            echo "Invalid Operator."
+            echo "Aborted."
+            exit 0
+            ;;
+    esac
+done
+
+
+#basepath=$(cd `dirname $0`; pwd)
+#filepath=`pwd`
+echo "/usr/bin/python3 $basepath/src/main.py "$args
+#/usr/bin/python3 $basepath/src/main.py $args

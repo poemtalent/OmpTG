@@ -1,9 +1,9 @@
 
 Options=\
     {'i':'Input Files.',
-     'w':'Generate WCET for the file imported.',
-     's':'Generate ALF for every statement that fit SWEET.',
-     'b':'Generate ALF for every OpenMP task.',
+     'gw':'Generate WCET for the file imported.',
+     'gs':'Generate ALF for every statement that fit SWEET.',
+     'gt':'Generate ALF for every OpenMP task.',
      'h':'Show Help.'
     }
 
