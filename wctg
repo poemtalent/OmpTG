@@ -8,23 +8,48 @@ basepath=$(cd `dirname $0`; pwd)
 
 args=""
 
-while getopts "i:h:gw:gs:gt" opt;
+while getopts "i:w:s:th" opt;
 do
     case $opt in
         i)
+			if [ ! -f $OPTARG ]; then
+				echo "-i Input Invalid."
+				echo "Aborted."
+				exit 0
+			else
+				file=`basename $OPTARG`
+            	args="$args -i $(cd `dirname $OPTARG`; pwd)/$file"
+			fi
+			;;
+        w)
+			if [ -f $OPTARG ]; then
+				echo "-w Input Invalid."
+				echo "Aborted."
+				exit 0
+			fi
             file=`basename $OPTARG`
-            $args=$args" -i "$(cd `dirname $OPTARG`; pwd)"/"$file
+            args="$args -w $(cd `dirname $OPTARG`; pwd)/$file"
             ;;
-        gw)
+        s)
+			if [ -f $OPTARG ]; then
+				echo "-s Input Invalid."
+				echo "Aborted."
+				exit 0
+			fi
             file=`basename $OPTARG`
-            $args=$args"-w "$(cd `dirname $OPTARG`; pwd)$file
+            args="$args -s $(cd `dirname $OPTARG`; pwd)/$file"
             ;;
-        gs)
-            ;;
-        gt)
+        t)
+			if [ -f $OPTARG ]; then
+				echo "-t Input Invalid."
+				echo "Aborted."
+				exit 0
+			fi
+            file=`basename $OPTARG`
+            args="$args -t $(cd `dirname $OPTARG`; pwd)/$file"
             ;;
         h)
-            $args="-h"
+            args="-h"
             break
             ;;
         \?)
@@ -35,8 +60,9 @@ do
     esac
 done
 
-
-#basepath=$(cd `dirname $0`; pwd)
-#filepath=`pwd`
-echo "/usr/bin/python3 $basepath/src/main.py "$args
-#/usr/bin/python3 $basepath/src/main.py $args
+if [ -n "$args" ]; then
+	echo "/usr/bin/python3 $basepath/src/main.py "$args
+	#/usr/bin/python3 $basepath/src/main.py $args
+else
+	echo "Please Import the file u'd like to analyze."
+fi
