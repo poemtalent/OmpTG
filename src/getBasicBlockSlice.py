@@ -2,7 +2,9 @@
 import os
 import re as r #正则表达式库
 import sys
-def getBasicBlockSlice(list):
+def getBasicBlockSlice(list,strr):
+    if strr == 'w':
+
         for bb in list:
             bb_dict = {}  # 创建字典
             start_flag = 'return'
@@ -64,6 +66,15 @@ def getBasicBlockSlice(list):
                 start_bb_flag = bb_body.find("label",start_bb_place)
                 # dict[(r.search('bb\d*', temp)).group()] = temp
         return bb_dict
+    elif strr == 'b':
+        for bb in list:
+            bb_dict = {}
+            bb_body = bb
+            task_st=bb_body.find('"')
+            task_en=bb_body.find('"',task_st+1)
+            bb_dict[bb_body[task_st:task_en+1]]=bb_body
+        return bb_dict
+
 
 def findPosFromPoint(string,startPoint):
     FindText=''

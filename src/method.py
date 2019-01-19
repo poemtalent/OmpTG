@@ -10,11 +10,13 @@ from Function_declaration import getFunction_declaration
 from Changejump import Changejump
 from getBasicBlockSlice import getBasicBlockSlice
 from Create_every_bb import Create_every_bb
+from Create_every_bb import Create_every_task
 from WCET_Generator import WCET_Output
 
 def Generate_evealf(filename):#'w':'Generate WCET for the file imported.'
     try:
-        Enter_File_Name = 'health_ompi_trim.alf'
+        # Enter_File_Name = 'health_ompi_trim.alf'
+        Enter_File_Name =filename
         # Enter_File_Name=sys.argv[1]
     except:
         print('Please Input ALF file u\'d like to analyze.\nAborted.')
@@ -35,17 +37,20 @@ def Generate_evealf(filename):#'w':'Generate WCET for the file imported.'
         list_func = getFunc(DATA)  # 将DATA里的每一个func提取出来组合为一个列表（含注释）
         Delete_Note(list_func)  # 将list_func的注释清除
         Every_func_mid_declaration = getFunction_declaration(list_func)
-        filesname = []
+        filesname_sum = []
+        for i in range(0, len(list_func)):
+            filesname_sum.append(findlabel(list_func[i]))
+        filesname=[]
         for i in range(0, len(list_func)):
             list_func_temp = []
             list_func_temp.append(list_func[i])
 
-            dict_temp = getBasicBlockSlice(list_func_temp)
+            dict_temp = getBasicBlockSlice(list_func_temp,'w')
             # print(dict_temp)
-            Changejump(dict_temp,'w')
+            Changejump(dict_temp,filesname_sum,'w')
             # print(dict_temp)
-            Create_every_bb(dict_temp, Every_func_mid_declaration, head, WCETList, filesname,'w')
-        # WCET_Output(WCETList,os.path.splitext(Enter_File_Name)[0])
+            Create_every_bb(dict_temp, Every_func_mid_declaration, head, WCETList, filesname)
+        WCET_Output(WCETList,os.path.splitext(Enter_File_Name)[0])
         print('Create ALF file Success!')
         # print(Every_func_mid_declaration)
         # print(list_func)
@@ -54,7 +59,8 @@ def Generate_evealf(filename):#'w':'Generate WCET for the file imported.'
 
 def Generate_taskalf(filename):#'b':'Generate ALF for every OpenMP task.',
     try:
-        Enter_File_Name = 'health_ompi_trim.alf'
+        # Enter_File_Name = 'health_ompi_trim.alf'
+        Enter_File_Name = filename
         # Enter_File_Name=sys.argv[1]
     except:
         print('Please Input ALF file u\'d like to analyze.\nAborted.')
@@ -74,6 +80,9 @@ def Generate_taskalf(filename):#'b':'Generate ALF for every OpenMP task.',
         list_func=getFunc(DATA)#将DATA里的每一个func提取出来组合为一个列表（含注释）
         Delete_Note(list_func)#将list_func的注释清除
         Every_func_mid_declaration=getFunction_declaration(list_func)
+        filesname_sum = {}
+        for i in range(0, len(list_func)):
+            filesname_sum[findlabel(list_func[i])]=list_func[i]
         filesname=[]
         for i in range(0,len(list_func)):
             list_func_temp=[]
@@ -81,15 +90,27 @@ def Generate_taskalf(filename):#'b':'Generate ALF for every OpenMP task.',
             funcname_startplace=list_func_temp[0].find('"')
             funcname_endplace=list_func_temp[0].find('"',funcname_startplace+1)
             if list_func_temp[0][funcname_startplace:funcname_endplace+1].find('taskFunc')!=-1:
+
+                dict_temp=getBasicBlockSlice(list_func_temp,'b')
                 #print(dict_temp)
-                Changejump(dict_temp,'b')
+                call_names=Changejump(dict_temp,filesname_sum,'b')
                 #print(dict_temp)
-                Create_every_bb(dict_temp,Every_func_mid_declaration,head,WCETList,filesname,'b')
-        # WCET_Output(WCETList,os.path.splitext(Enter_File_Name)[0])
+                Create_every_task(dict_temp,Every_func_mid_declaration,head,filesname,call_names,filesname_sum)
+        WCET_Output(WCETList,os.path.splitext(Enter_File_Name)[0])
         print('Create ALF file Success!')
         # print(Every_func_mid_declaration)
         # print(list_func)
     else:
         print('It\'s not a file')
+def findlabel(str):
+    strex='"';
+    stren=':';
+    s_place=0;
+    e_place=0;
+    s_place=str.find(strex)
+    e_place=str.find(stren,s_place+1)
+    result = str[s_place+1:e_place]
 
-Generate_taskalf('filename')
+    return result
+# Generate_taskalf('filename')
+# Generate_evealf('filename')

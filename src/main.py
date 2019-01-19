@@ -11,7 +11,8 @@ from Changejump import Changejump
 from getBasicBlockSlice import getBasicBlockSlice
 from Create_every_bb import Create_every_bb
 from WCET_Generator import WCET_Output
-
+from method import  Generate_evealf
+from method import  Generate_taskalf
 
 
 if __name__=="__main__":
@@ -37,9 +38,11 @@ if __name__=="__main__":
     print(getArgs)
     if (getArgs['w']!=''):
     	#w_Function
-    	pass
+        Generate_evealf(File_name)
+    	# pass
     elif (getArgs['t']!=''):
     	#t_Function
-    	pass
+        Generate_taskalf(File_name)
+    	# pass
 else:
     print("Please run this scripts directly.")

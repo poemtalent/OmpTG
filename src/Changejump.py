@@ -3,9 +3,8 @@ import os
 import re as r #正则表达式库
 import sys
 # dict={'return': '{ label 64 { lref 64 "Circle::bb5" } { dec_unsigned 64 0 } }          { return }', 'bb': '{ label 64 { lref 64 "Circle::bb" } { dec_unsigned 64 0 } }          { store { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } with { dec_unsigned 32 0 } }     { label 64 { lref 64 "Circle::bb::0:::1" } { dec_unsigned 64 0 } }     { jump { label 64 { lref 64 "Circle::bb1" } { dec_unsigned 64 0 } } leaving 0 }', 'bb1': '{ label 64 { lref 64 "Circle::bb1" } { dec_unsigned 64 0 } }          { switch      { s_lt 32 { load 32 { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } } { dec_unsigned 32 100 } }      { target { dec_signed 1 { minus 1 } } { label 64 { lref 64 "Circle::bb2" } { dec_unsigned 64 0 } } }      { default { label 64 { lref 64 "Circle::bb5" } { dec_unsigned 64 0 } } }     }', 'bb2': '{ label 64 { lref 64 "Circle::bb2" } { dec_unsigned 64 0 } }          { jump { label 64 { lref 64 "Circle::bb3" } { dec_unsigned 64 0 } } leaving 0 }', 'bb3': '{ label 64 { lref 64 "Circle::bb3" } { dec_unsigned 64 0 } }          { store { addr 64 { fref 64 "%tmp4" } { dec_unsigned 64 0 } } with      { add 32 { load 32 { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } } { dec_unsigned 32 1 } { dec_unsigned 1 0 } }     }          { label 64 { lref 64 "Circle::bb3::1" } { dec_unsigned 64 0 } }     { store { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } with { load 32 { addr 64 { fref 64 "%tmp4" } { dec_unsigned 64 0 } } } }     { label 64 { lref 64 "Circle::bb3::1:::1" } { dec_unsigned 64 0 } }     { jump { label 64 { lref 64 "Circle::bb1" } { dec_unsigned 64 0 } } leaving 0 }'}
-def Changejump (dict,strr):
+def Changejump (dict,filesname_sum,strr):
     if strr=='w':
-
         changedata = ''
         for bb in   dict.keys():
 
@@ -21,7 +20,6 @@ def Changejump (dict,strr):
                 start_place=string.find(start,start_pl+5)
                 #print(start_place)
                 prestart_place=0
-                sbb = ''
                 while start_place!=-1:
                     num = 2
                     for I in range(0, start_place):
@@ -113,9 +111,34 @@ def Changejump (dict,strr):
                             end_pl=i
                             break
                 changedata=dict['return'][start_pl:end_pl]
-    elif strr=='b':
+    elif strr=='b':    #记录task中call的函数名
+        for bb in dict.keys():
+            call_func=[]  #返回的函数名列表
+            func = dict[bb]  #这个taskfunc的主题
+            call_name_st=func.find('call')
+            while call_name_st!=-1:
+                if (func[call_name_st-1]==' ' or func[call_name_st-1]=='{')and(func[call_name_st+4]==' ' or func[call_name_st+4]=='{'):
+                    call_name_st=func.find('"',call_name_st)
+                    call_name_en=func.find('"',call_name_st+1)
+                    call_func.append(func[call_name_st+1:call_name_en])
+                    call_name_st=func.find('call',call_name_en)
+            return call_func
+
+
+
 
 
     #
 # Changejump (dict)
 # print(dict)
+
+def findlabel(str):
+    strex = '"';
+    stren = ':';
+    s_place = 0;
+    e_place = 0;
+    s_place = str.find(strex)
+    e_place = str.find(stren, s_place + 1)
+    result = str[s_place + 1:e_place]
+
+    return result
