@@ -21,10 +21,10 @@ if __name__=="__main__":
     WCET_File_Name=''
     Task_ALF_Output_Directiory=''
     #Flag
-    op_i=false
-    op_t=false
-    op_w=false
-    op_h=false
+    op_i=False
+    op_t=False
+    op_w=False
+    op_h=False
     #Process
     getArgs={}
     options,args=getopt.getopt(sys.argv[1:],"hi:w:t:o:")
@@ -33,20 +33,20 @@ if __name__=="__main__":
             ShowOptions()
             sys.exit(0)
         if op == '-i':
-            op_i=true
-        	File_Name=value
+            op_i=True
+            File_Name=value
             getArgs['i']=value
-        	continue
+            continue
         if op == '-w':
-            op_w=true
+            op_w=True
             getArgs['w']=value
-        	WCET_File_Name=value
-        	continue
+            WCET_File_Name=value
+            continue
         if op == '-t':
-            op_t=true
+            op_t=True
             getArgs['w']=value
-        	Task_ALF_Output_Directiory=value
-    if (op_i == false):
+            Task_ALF_Output_Directiory=value
+    if (op_i == False):
         print('Please Import the file u\'d like to analyze.\nAborted.')
     else:
         Generate_evealf(getArgs)

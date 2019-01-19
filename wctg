@@ -46,7 +46,7 @@ do
 done
 
 if [ -n "$args" ]; then
-	#echo "/usr/bin/python3 $(cd `dirname $0`; pwd)/src/main.py "$args
+	echo "Executing:/usr/bin/python3 $(cd `dirname $0`; pwd)/src/main.py "$args
 	/usr/bin/python3 $(cd `dirname $0`; pwd)/src/main.py $args
 else
 	echo "Please Import the file u'd like to analyze."
