@@ -16,33 +16,39 @@ from method import  Generate_taskalf
 
 
 if __name__=="__main__":
-    #Process Options
+    #Input Text
     File_Name=''
     WCET_File_Name=''
     Task_ALF_Output_Directiory=''
+    #Flag
+    op_i=false
+    op_t=false
+    op_w=false
+    op_h=false
+    #Process
     getArgs={}
-    options,args=getopt.getopt(sys.argv[1:],"hi:o:")
+    options,args=getopt.getopt(sys.argv[1:],"hi:w:t:o:")
     for op,value in options:
         if op == '-h':
             ShowOptions()
             sys.exit(0)
         if op == '-i':
+            op_i=true
         	File_Name=value
+            getArgs['i']=value
         	continue
         if op == '-w':
+            op_w=true
+            getArgs['w']=value
         	WCET_File_Name=value
         	continue
         if op == '-t':
+            op_t=true
+            getArgs['w']=value
         	Task_ALF_Output_Directiory=value
-    getArgs={'i':File_Name,'w':WCET_File_Name,'t':Task_ALF_Output_Directiory}
-    print(getArgs)
-    if (getArgs['w']!=''):
-    	#w_Function
-        Generate_evealf(File_name)
-    	# pass
-    elif (getArgs['t']!=''):
-    	#t_Function
-        Generate_taskalf(File_name)
-    	# pass
+    if (op_i == false):
+        print('Please Import the file u\'d like to analyze.\nAborted.')
+    else:
+        Generate_evealf(getArgs)
 else:
     print("Please run this scripts directly.")
