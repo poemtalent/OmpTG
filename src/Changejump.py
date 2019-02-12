@@ -2,8 +2,9 @@
 import os
 import re as r #正则表达式库
 import sys
+import operator
 # dict={'return': '{ label 64 { lref 64 "Circle::bb5" } { dec_unsigned 64 0 } }          { return }', 'bb': '{ label 64 { lref 64 "Circle::bb" } { dec_unsigned 64 0 } }          { store { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } with { dec_unsigned 32 0 } }     { label 64 { lref 64 "Circle::bb::0:::1" } { dec_unsigned 64 0 } }     { jump { label 64 { lref 64 "Circle::bb1" } { dec_unsigned 64 0 } } leaving 0 }', 'bb1': '{ label 64 { lref 64 "Circle::bb1" } { dec_unsigned 64 0 } }          { switch      { s_lt 32 { load 32 { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } } { dec_unsigned 32 100 } }      { target { dec_signed 1 { minus 1 } } { label 64 { lref 64 "Circle::bb2" } { dec_unsigned 64 0 } } }      { default { label 64 { lref 64 "Circle::bb5" } { dec_unsigned 64 0 } } }     }', 'bb2': '{ label 64 { lref 64 "Circle::bb2" } { dec_unsigned 64 0 } }          { jump { label 64 { lref 64 "Circle::bb3" } { dec_unsigned 64 0 } } leaving 0 }', 'bb3': '{ label 64 { lref 64 "Circle::bb3" } { dec_unsigned 64 0 } }          { store { addr 64 { fref 64 "%tmp4" } { dec_unsigned 64 0 } } with      { add 32 { load 32 { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } } { dec_unsigned 32 1 } { dec_unsigned 1 0 } }     }          { label 64 { lref 64 "Circle::bb3::1" } { dec_unsigned 64 0 } }     { store { addr 64 { fref 64 "%i.0" } { dec_unsigned 64 0 } } with { load 32 { addr 64 { fref 64 "%tmp4" } { dec_unsigned 64 0 } } } }     { label 64 { lref 64 "Circle::bb3::1:::1" } { dec_unsigned 64 0 } }     { jump { label 64 { lref 64 "Circle::bb1" } { dec_unsigned 64 0 } } leaving 0 }'}
-def Changejump (dict,filesname_sum,strr):
+def Changejump (dict,filesname_sum,call_result,strr):
     if strr=='w':
         changedata = ''
         for bb in   dict.keys():
@@ -113,17 +114,45 @@ def Changejump (dict,filesname_sum,strr):
                 changedata=dict['return'][start_pl:end_pl]
     elif strr=='b':    #记录task中call的函数名
         for bb in dict.keys():
-            call_func=[]  #返回的函数名列表
+            call_func_temp=[]
+            call_func_tempp=[]
+            call_func={}  #返回的函数名列表
             func = dict[bb]  #这个taskfunc的主题
-            call_name_st=func.find('call')
-            while call_name_st!=-1:
-                if (func[call_name_st-1]==' ' or func[call_name_st-1]=='{')and(func[call_name_st+4]==' ' or func[call_name_st+4]=='{'):
-                    call_name_st=func.find('"',call_name_st)
-                    call_name_en=func.find('"',call_name_st+1)
-                    call_func.append(func[call_name_st+1:call_name_en])
-                    call_name_st=func.find('call',call_name_en)
-            return call_func
-
+            findcallname(func, call_func,call_func_tempp,filesname_sum,call_result)
+            for i in call_func.keys():
+                call_func_temp.append(call_func[i])
+            while operator.eq(call_func_temp,call_func_tempp)==False:
+                call_func_tempp=call_func_temp
+                for i in call_func_temp:
+                    findcallname(filesname_sum[i], call_func, call_func_tempp,filesname_sum,call_result)
+                call_func_temp=[]
+                for i in call_func.keys():
+                    call_func_temp.append(call_func[i])
+        asd='sd'
+        return call_func
+def findcallname(body,call_name,temp,real_call,call_result):
+    call_name_st = body.find('call')
+    tempp=[]
+    tempp=tempp+temp
+    while call_name_st != -1:
+        if (body[call_name_st - 1] == ' ' or body[call_name_st - 1] == '{') and (body[call_name_st + 4] == ' ' or body[call_name_st + 4] == '{'):
+            call_name_st = body.find('"', call_name_st)
+            call_name_en = body.find('"', call_name_st + 1)
+            for i in range(0,call_name_st):
+                if body[call_name_st-1-i]=='"':
+                    stcall_st=call_name_st-1-i
+                    break
+            for i in range(0, stcall_st):
+                if body[stcall_st-1 - i] == '"':
+                    stcall_en = stcall_st-1 - i
+                    break
+            a=body[stcall_en + 1:stcall_st]
+            call_result[a] = body[call_name_st + 1:call_name_en]
+            if (body[call_name_st + 1:call_name_en] not in tempp) and(body[call_name_st + 1:call_name_en] in real_call.keys()):
+                call_name[a]=body[call_name_st + 1:call_name_en]
+                tempp.append(body[call_name_st + 1:call_name_en])
+            # call_name.append(body[call_name_st + 1:call_name_en])
+            call_name_st = body.find('call', call_name_en)
 
 
 

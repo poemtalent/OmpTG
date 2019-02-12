@@ -6,7 +6,8 @@ import sys
 from callFunction import GenerateCallFunction
 from callFunction import findPosFromPoint
 import shutil
-def Create_every_bb (dic,dicti,li,WCETList,filesname):
+def Create_every_bb (dic,dicti,li,WCETList,filesname,outname):
+    outname=outname+'/'
     sysstr = platform.system()#system
     for bb in dic:
         if len(dic)!=1:
@@ -14,11 +15,12 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                 if sysstr=="Linux":
                     getfunc_name = dic[bb]
                     FuncLabel = findlabel(getfunc_name)
-                    path = 'Generate_file/' + FuncLabel
+                    path = outname + FuncLabel
                     folder = os.path.exists(path)
                     if not folder:
                         os.makedirs(path)
-                    GenerateFileName = 'Generate_file/' + FuncLabel + '/' + bb + '.alf'
+                    GenerateFileName = outname + FuncLabel + '/' + bb + '.alf'
+                    # 'Generate_file/'
                 else:
                     getfunc_name=dic[bb]
                     FuncLabel=findlabel(getfunc_name)
@@ -26,12 +28,12 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                         if filesname[i] == FuncLabel.lower():
                             FuncLabel=FuncLabel+"_other"
                             break
-                    path='Generate_file/'+FuncLabel
+                    path=outname+FuncLabel
                     folder = os.path.exists(path)
                     if not folder:
                         os.makedirs(path)
                     # f = open('Generate_file/'+'Circle_'+bb+'.txt', 'w')
-                    GenerateFileName='Generate_file/'+FuncLabel+'/'+bb+'.alf'
+                    GenerateFileName=outname+FuncLabel+'/'+bb+'.alf'
 
 
                 f = open(GenerateFileName, 'w')
@@ -85,13 +87,13 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
                     FuncLabel=FuncLabel+"_other"
                     # print("1")
                     break
-            path='Generate_file/'+FuncLabel
+            path=outname+FuncLabel
             folder = os.path.exists(path)
             if not folder:
                 os.makedirs(path)
             # f = open('Generate_file/'+'Circle_'+bb+'.txt', 'w')
 
-            GenerateFileName='Generate_file/'+FuncLabel+'/'+bb+'.alf'
+            GenerateFileName=outname+FuncLabel+'/'+bb+'.alf'
             f = open(GenerateFileName, 'w')
             for i in range(0,len(li)):
                 #print(i)
@@ -119,15 +121,16 @@ def Create_every_bb (dic,dicti,li,WCETList,filesname):
     funcname=findlabel(dic['return'])
     filesname.append(funcname.lower())
 
-def Create_every_task(dic, dicti, li, filesname,list,func_body):
+def Create_every_task(dic, dicti, li, filesname,call_names,func_body,outname):# (dict_temp,Every_func_mid_declaration,head,filesname,call_names,filesname_sum)
+    outname = outname + '/'
     sysstr = platform.system()  # system
     for bb in dic:
         FuncLabel=findlabel(bb)
-        path = 'Generate_file'
+        path = outname
         folder = os.path.exists(path)
         if not folder:
             os.makedirs(path)
-        GenerateFileName = 'Generate_file/' + FuncLabel + '.alf'
+        GenerateFileName = outname + FuncLabel + '.alf'
         f = open(GenerateFileName, 'w')
         for i in range(0, len(li)):
             # print(i)
@@ -147,9 +150,13 @@ def Create_every_task(dic, dicti, li, filesname,list,func_body):
                     f.write(li[i][j] + '\n')
         f.write(dicti[FuncLabel] + '\n')
         f.write(dic[bb] + '\n')
+        list=[]
+        for i in call_names.keys():
+            list.append(call_names[i])
         for i in range(0,len(list)):
-            f.write(dicti[list[i]] + '\n')
-            f.write(func_body[list[i]] + '\n')
+            if list[i]!=FuncLabel:
+                f.write(dicti[list[i]] + '\n')
+                f.write(func_body[list[i]] + '\n')
         f.write('  }\n')
         f.write(' }\n')
 

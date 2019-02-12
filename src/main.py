@@ -49,6 +49,10 @@ if __name__=="__main__":
     if (op_i == False):
         print('Please Import the file u\'d like to analyze.\nAborted.')
     else:
-        Generate_evealf(getArgs)
+        if op_w!=False:
+            Generate_evealf(getArgs['i'],WCET_File_Name)
+        elif op_t!=False:
+            Generate_taskalf(getArgs['i'],Task_ALF_Output_Directiory)
+
 else:
     print("Please run this scripts directly.")
