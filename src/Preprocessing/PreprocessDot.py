@@ -5,6 +5,7 @@ NodeReg=r'".*?"\s*\[.*?\]'
 NodeReg_Label=r'label=".*?"'
 NodeReg_Head=r'^".*?"'
 EdgeReg=r'".*?"\s*->\s*".*?"'
+subgraphNameReg=r'".*?"'
 
 
 def preprocess(Path):
@@ -24,12 +25,17 @@ def preprocess(Path):
             if line.strip()!='':
                 line=line.strip()
                 if r.match(NodeReg,line) or r.match(EdgeReg,line):
-                    Definition=Definition+line+'\n'
                     if r.match(NodeReg,line):
                         #生成表
                         head=r.search(NodeReg_Head,line).group()
                         label=r.search(NodeReg_Label,line).group().split('=')[-1]
+                        if label=='""':
+                            label=head
                         DefinitionDict[head]=label
+                        #对entry_exit做处理
+                        line=line.replace('""',head)
+                    Definition=Definition+line+'\n'
+
                 else:
                     continue
             else:
@@ -43,7 +49,6 @@ def preprocess(Path):
                 Definition=Definition.replace(key,DefinitionDict[key])
             else:
                 continue
-
 
         #step 3 子图中保留结点
 
@@ -68,7 +73,10 @@ def preprocess(Path):
                             Output.write(r.search(NodeReg_Head,line).group()+'\n')
                     pass
                 else:
-                    Output.write(line+'\n')
+                    if line.startswith('subgraph'):
+                        Output.write(line+'\n'+'color="#3040C0"\n'+'label='+r.search(subgraphNameReg,line).group()+'\nstyle="bold"\n')
+                    else:
+                        Output.write(line+'\n')
             else:
                 break
 
