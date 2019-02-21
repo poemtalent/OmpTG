@@ -1,7 +1,7 @@
 import networkx as nx
 import re
 #=========================
-from Preprocessing.PreprocessDot import preprocess
+from src.Preprocessing.PreprocessDot import preprocess
 #=========================
 
 dotPath='dot/task2.dot'
