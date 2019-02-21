@@ -1,4 +1,4 @@
-# WCET_Generator
+# OmpTG
 Generate WCET for ALF Statements based on SWEET Tool.
 
 ## Method
@@ -6,12 +6,15 @@ Generate WCET for ALF Statements based on SWEET Tool.
 
 ## Requirement
 - Python (version 3+).
-- SWEET.
+- NetworkX For Python.
+- SWEET Tool.
 
 ## File Resource
 - clt : insertsort.clt provided by SWEET manual.
-- std_hll.alf: for 64bit (see SWEET manual)
-  - get 32bit std_hll.alf in SWEET manual.
+
+- std_hll.alf: for 64bit (see SWEET manual).
+
+  > get 32bit std_hll.alf in SWEET manual.
 
 ## How To Use：
 > ./wctg [.alf]
@@ -25,15 +28,15 @@ Remember to give "wctg" permission to execute.
 
 
 
-## WCET_Generator V2.3
+## OmpTG V2.3
 
 - Fix Bugs.
 - Add rules according to ALF paper.
 
-## WCET_Generator V2.2
+## OmpTG V2.2
 
 - Fix Calculation of Call.
 
-## WCET_Generator V2.1
+## OmpTG V2.1
 
 - unspported: Call.
