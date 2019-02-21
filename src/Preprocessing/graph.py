@@ -1,5 +1,7 @@
 import networkx as nx
+from networkx.drawing.nx_agraph import write_dot
 import re
+
 #=========================
 from src.Preprocessing.PreprocessDot import preprocess
 #=========================
@@ -33,14 +35,28 @@ def parse(parseFunction,graph,relationDict):
     :param relationDict: 关系字典，basicblock:callFunction
     :return: graph 拼接的图文件
     '''
-
     #获取图中所有节点
-    nodesIter=nx.nodes(graph)
+    try:
+        for callBlock in relationDict.keys():
+            #查找图中的callBlock,连接callBlock以及函数entry,exit连接callBlock的下一条边
+            if relationDict[callBlock].startswith('ort_'):
+                continue
+                #callBlockNode = nx.get_node_attributes(graph, callBlock)
 
-    for callBlock in relationDict.keys():
-        #查找图中的callBlock
-        pass
-    pass
+            Function_entry=relationDict[callBlock]+'_entry'
+            Function_exit=relationDict[callBlock]+'_exit'
+            nextNode=None
+
+            for nod in nx.neighbors(graph,callBlock):
+                nextNode=nod
+            graph.add_edge(Function_exit,nextNode)
+            graph.add_edge(callBlock, Function_entry)
+            # 删去不必要的边
+            graph.remove_edge(callBlock,nextNode)
+    except:
+        print('名称与结点名不对应.')
+        exit(-1)
+
 
 
 if __name__=='__main__':
@@ -48,6 +64,9 @@ if __name__=='__main__':
     preprocess(dotPath)
     graph = nx.nx_pydot.read_dot(dotPath+'tmp')#'Preprocessing/knapsack_ompi_trim.Preprocessing')
     parse(parseFunction,graph,relation)
+    write_dot(graph,'dot/graph.dot')
+
+
 
 
 
