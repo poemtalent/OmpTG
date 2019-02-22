@@ -92,7 +92,7 @@ def Generate_taskalf(filename,outname):#'b':'Generate ALF for every OpenMP task.
             funcname_startplace=list_func_temp[0].find('"')
             funcname_endplace=list_func_temp[0].find('"',funcname_startplace+1)
 
-            if list_func_temp[0][funcname_startplace:funcname_endplace+1].find('taskFunc')!=-1:
+            if (list_func_temp[0][funcname_startplace:funcname_endplace+1].find('taskFunc')!=-1) or (list_func_temp[0][funcname_startplace:funcname_endplace+1].find('thrFunc')!=-1):
                 call_result={}
                 dict_temp=getBasicBlockSlice(list_func_temp,'b')
                 #print(dict_temp)
@@ -100,7 +100,7 @@ def Generate_taskalf(filename,outname):#'b':'Generate ALF for every OpenMP task.
                 #print(dict_temp)
                 Create_every_task(dict_temp,Every_func_mid_declaration,head,filesname,call_names,filesname_sum,outname)
                 funcname_endplacee = list_func_temp[0].find(':', funcname_startplace + 1)
-                GenerateFileName = outname+'/' +list_func_temp[0][funcname_startplace:funcname_endplacee] + 'relation.txt'
+                GenerateFileName = outname+'/' +list_func_temp[0][funcname_startplace+1:funcname_endplacee] + 'relation.txt'
                 numm=numm+1
                 f = open(GenerateFileName, 'w')
                 for i in call_result.keys():
@@ -123,5 +123,5 @@ def findlabel(str):
     result = str[s_place+1:e_place]
 
     return result
-# Generate_taskalf('health.alf')
+# Generate_taskalf('health.alf','asas')
 # Generate_evealf('filename')
