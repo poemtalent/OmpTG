@@ -1,14 +1,14 @@
 import networkx as nx
-from networkx.drawing.nx_agraph import write_dot
+from networkx.drawing.nx_pydot import write_dot
 import re
 
 #=========================
 from src.Preprocessing.PreprocessDot import preprocess
 #=========================
 
-dotPath='dot/task2.dot'
-relationPath='dot/relation.txt'
-parseFunction='_taskFunc2_'
+dotPath='dot/test/knapsack_test.dot'
+relationPath='dot/test/test.txt'
+parseFunction='_thrFunc0_'
 
 def parseRelation(Path):
     '''
@@ -40,9 +40,11 @@ def parse(parseFunction,graph,relationDict):
         for callBlock in relationDict.keys():
             #查找图中的callBlock,连接callBlock以及函数entry,exit连接callBlock的下一条边
             if relationDict[callBlock].startswith('ort_'):
+                graph.node[callBlock]['label']='('+callBlock.split('__bb')[0]+')'+relationDict[callBlock][4:]
                 continue
                 #callBlockNode = nx.get_node_attributes(graph, callBlock)
-
+            else:
+                graph.node[callBlock]['label'] = 'CALL ' + relationDict[callBlock]
             Function_entry=relationDict[callBlock]+'_entry'
             Function_exit=relationDict[callBlock]+'_exit'
             nextNode=None
@@ -64,7 +66,11 @@ if __name__=='__main__':
     preprocess(dotPath)
     graph = nx.nx_pydot.read_dot(dotPath+'tmp')#'Preprocessing/knapsack_ompi_trim.Preprocessing')
     parse(parseFunction,graph,relation)
-    write_dot(graph,'dot/graph.dot')
+    write_dot(graph,'dot/test/thrFunc0_Pre.dot')
+
+
+
+
 
 
 

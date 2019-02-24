@@ -20,8 +20,8 @@ def preprocess(Path):
     #step1 生成对应label转换表,查找definition
     DefinitionDict={}
     try:
-        while True:
-            line=Input.readline()
+        lineData=Input.readlines()
+        for line in lineData:
             if line.strip()!='':
                 line=line.strip()
                 if r.match(NodeReg,line) or r.match(EdgeReg,line):
@@ -39,7 +39,7 @@ def preprocess(Path):
                 else:
                     continue
             else:
-                break
+                continue
 
         #step 2 修改definition
 
@@ -55,8 +55,7 @@ def preprocess(Path):
         Input.seek(0)
         # flag -> True , put Definition
         Flag=False
-        while True:
-            line=Input.readline()
+        for line in lineData:
             if line.strip().startswith('subgraph') and Flag==False:
                 Flag=True
                 Output.write(Definition)
@@ -74,12 +73,14 @@ def preprocess(Path):
                     pass
                 else:
                     if line.startswith('subgraph'):
-                        Output.write(line+'\n'+'color="#3040C0"\n'+'label='+r.search(subgraphNameReg,line).group()+'\nstyle="bold"\n')
+                        # 给subgraph加上'cluster'_
+                        text=r.search(subgraphNameReg,line).group().strip('"')
+                        line=r.sub(subgraphNameReg,'"cluster_'+text+'"',line)
+                        Output.write(line+'\n'+'label='+text+'\nstyle="bold"\n')
                     else:
                         Output.write(line+'\n')
             else:
-                break
-
+                continue
     except:
         print('Preprocessing Error.')
         exit(-1)
