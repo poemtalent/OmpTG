@@ -7,7 +7,7 @@ from callFunction import GenerateCallFunction
 from callFunction import findPosFromPoint
 import shutil
 def Create_every_bb (dic,dicti,li,WCETList,filesname,outname):
-    outname=outname+'/'
+    outname='/tmp'+outname+'/'
     sysstr = platform.system()#system
     for bb in dic:
         if len(dic)!=1:
