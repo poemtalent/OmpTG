@@ -6,9 +6,17 @@ import re
 from src.Preprocessing.PreprocessDot import preprocess
 #=========================
 
-dotPath='dot/test/knapsack_test.dot'
-relationPath='dot/test/test.txt'
+#设置工作目录
+root='/home/kingtous/Desktop/bots-master/omp-tasks/nqueens/thr/'
+
+#=======DOT存放位置===============
+dotPath=root+'nqueens_sweet.dot'
+#=======relation.txt存放位置======
+relationPath=root+'_thrFunc0_relation.txt'
+#=======需要处理的函数入口（暂时不用）======
 parseFunction='_thrFunc0_'
+#=======dot输出==========
+dotOutput=root+'thrFunc0_pro.dot'
 
 def parseRelation(Path):
     '''
@@ -66,7 +74,7 @@ if __name__=='__main__':
     preprocess(dotPath)
     graph = nx.nx_pydot.read_dot(dotPath+'tmp')#'Preprocessing/knapsack_ompi_trim.Preprocessing')
     parse(parseFunction,graph,relation)
-    write_dot(graph,'dot/test/thrFunc0_Pre.dot')
+    write_dot(graph,dotOutput)
 
 
 
